@@ -4,9 +4,8 @@ import Image from "next/image";
 import { useCallback, useState } from "react";
 import MediaModal, { type ModalMedia } from "./components/MediaModal";
 import ReviewVideoCard from "./components/ReviewVideoCard";
+import LanguageToggle, { type Language } from "./components/LanguageToggle";
 import { ArrowDown, House, MapPin } from "lucide-react";
-
-type Language = "ta" | "en";
 
 const copy = {
   ta: {
@@ -153,22 +152,7 @@ export default function Home() {
             <House size="20" />
             {t.eyebrow}
           </p>
-          <div className="flex shrink-0 items-center rounded-full border border-[#f8bd2b]/60 bg-[#431006] p-1 text-xs font-bold">
-            <button
-              onClick={() => setLanguage("ta")}
-              aria-pressed={language === "ta"}
-              className={`rounded-full px-3 py-1.5 transition ${language === "ta" ? "bg-[#ffc928] text-[#4d1707]" : "text-white/80 hover:text-white"}`}
-            >
-              தமிழ்
-            </button>
-            <button
-              onClick={() => setLanguage("en")}
-              aria-pressed={language === "en"}
-              className={`rounded-full px-3 py-1.5 transition ${language === "en" ? "bg-[#ffc928] text-[#4d1707]" : "text-white/80 hover:text-white"}`}
-            >
-              EN
-            </button>
-          </div>
+          <LanguageToggle language={language} onChange={setLanguage} />
         </div>
       </div>
 

@@ -62,7 +62,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ta">
+    <html lang="ta" data-scroll-behavior="smooth">
       <body
         className={`${tamil.variable} ${latin.variable} bg-[#fff8e8] text-[#3c160b] antialiased`}
       >
