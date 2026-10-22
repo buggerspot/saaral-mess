@@ -92,7 +92,6 @@ export default function MediaModal({
           width={media.width}
           height={media.height}
           sizes="100vw"
-          quality={90}
           className="h-auto max-h-[calc(100dvh-1.5rem)] w-auto max-w-full rounded-xl object-contain shadow-2xl sm:max-h-[calc(100dvh-3rem)]"
         />
       ) : (

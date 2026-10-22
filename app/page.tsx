@@ -17,7 +17,7 @@ const copy = {
     intro:
       "சாரல் மெஸ்ஸில் ஒவ்வொரு இலையிலும் வீட்டுச் சமையலின் அன்பும், ஊரின் மணமும்",
     badge1: "கூரைக்கடை",
-    menuTitle: "இன்றைய சுவை",
+    menuTitle: "எங்கள் சிறப்பு உணவு வகைகள்",
     menuSub: "நல்ல பசி… நிறைவான சாப்பாடு!",
     foods: [
       {
@@ -126,8 +126,8 @@ const reviews = [{ id: "review-1", src: "/videos/review-1.mp4", rating: 5 }];
 const heroImage = {
   src: "/images/saaral-mess.jpg",
   alt: "Traditional mutton meals served on a banana leaf at Saaral Mess",
-  width: 3472,
-  height: 4624,
+  width: 1000,
+  height: 700,
 };
 
 const contacts = [

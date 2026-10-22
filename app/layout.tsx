@@ -16,7 +16,7 @@ const latin = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://saaralmess.example"),
+  metadataBase: new URL("https://saaralmess.tamilbusiness.in"),
   title: {
     default: "சாரல் மெஸ் | Saaral Mess – Tenkasi · Courtallam",
     template: "%s | Saaral Mess",
@@ -38,16 +38,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: "சாரல் மெஸ் | Saaral Mess",
     description:
-      "வீட்டு சுவை • அம்மா கைப்பக்குவம் • தென்காசி–குற்றாலம் பக்கம்",
+      "வீட்டு சுவை • அம்மா கைப்பக்குவம் • தென்காசி - குற்றாலம் பக்கம், குத்துக்கல்வலசை",
     type: "website",
     locale: "ta_IN",
-    images: ["/images/saaral-banner.jpg"],
+    images: ["/images/saaral-mess-og.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "சாரல் மெஸ் | Saaral Mess",
-    description: "வீட்டு சுவை, அம்மா கைப்பக்குவம் — Tenkasi–Courtallam side.",
-    images: ["/images/saaral-banner.jpg"],
+    description: "வீட்டு சுவை, அம்மா கைப்பக்குவம் - Tenkasi - Courtallam side.",
+    images: ["/images/saaral-mess-og.webp"],
   },
   robots: { index: true, follow: true },
 };
@@ -58,10 +58,14 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ta">
-      <body className={`${tamil.variable} ${latin.variable} bg-[#fff8e8] text-[#3c160b] antialiased`}>
+      <body
+        className={`${tamil.variable} ${latin.variable} bg-[#fff8e8] text-[#3c160b] antialiased`}
+      >
         {children}
       </body>
     </html>
