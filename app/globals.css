@@ -11,3 +11,9 @@ html {
 body {
   margin: 0;
 }
+
+/* Keeps the scrollbar space reserved so locking scroll for the
+   image/video modal doesn't shift the page sideways. */
+html {
+  scrollbar-gutter: stable;
+}

@@ -1,45 +1,47 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import MediaModal, { type ModalMedia } from "./components/MediaModal";
+import ReviewVideoCard from "./components/ReviewVideoCard";
+import { ArrowDown, House, MapPin } from "lucide-react";
 
 type Language = "ta" | "en";
 
 const copy = {
   ta: {
-    eyebrow: "தென்காசி • குற்றாலம் சுற்றுவட்டாரம்",
+    eyebrow: "கூரைக்கடை",
     headline: "வீட்டு சுவை… அம்மா கைப்பக்குவம்!",
-    subhead: "மண்வாசனை மாறாத உணவு. மனசார பரிமாறும் அசல் ஊர் சாப்பாடு.",
+    subhead:
+      "வீட்டில் சமைப்பது போலவே எங்கள் கடையிலும் சமைக்கிறோம். சமையலுக்கு வெளியாள் இல்லை - எங்கள் அம்மாக்களின் சமையல், உங்கள் வீட்டு சுவை!",
     intro:
-      "சாரல் மெஸ்ஸில் ஒவ்வொரு இலையிலும் வீட்டுச் சமையலின் அன்பும், ஊரின் மணமும்.",
-    badge1: "வீட்டு சுவை",
-    badge2: "அம்மா கைப்பக்குவம்",
-    badge3: "கறி கடை சுவை",
+      "சாரல் மெஸ்ஸில் ஒவ்வொரு இலையிலும் வீட்டுச் சமையலின் அன்பும், ஊரின் மணமும்",
+    badge1: "கூரைக்கடை",
     menuTitle: "இன்றைய சுவை",
     menuSub: "நல்ல பசி… நிறைவான சாப்பாடு!",
     foods: [
       {
         name: "மட்டன் சாப்பாடு",
         english: "Mutton Meals",
-        detail: "மசாலா மணம் நிறைந்த நாட்டுச் சுவை",
+        detail: "மட்டன் குழம்பு, அளவற்ற சாப்பாடு",
         image: "/images/mutton-meals.webp",
       },
       {
         name: "சிக்கன் சாப்பாடு",
         english: "Chicken Meals",
-        detail: "வீட்டு மசாலாவில் மனம் கவரும் சுவை",
+        detail: "சிக்கன் குழம்பு, அளவற்ற சாப்பாடு",
         image: "/images/chicken-meals.webp",
       },
       {
         name: "மீன் சாப்பாடு",
         english: "Fish Meals",
-        detail: "கடல் சுவையும் காரசாரமான குழம்பும்",
+        detail: "1 பொரித்த மீன் + 1 குழம்பு மீன், அளவற்ற சாப்பாடு",
         image: "/images/fish-meals.webp",
       },
       {
         name: "உளுந்தம்பருப்பு சோறு",
         english: "Ulundhu Paruppu Soru",
-        detail: "நம் மண்ணின் பாரம்பரிய உணவு",
+        detail: "உளுந்தம் பருப்புச் சோறு + கருவாட்டுக் குழம்பு",
         image: "/images/ulunthu-meals.webp",
       },
     ],
@@ -49,45 +51,51 @@ const copy = {
     hoursLabel: "திறந்திருக்கும் நேரம்",
     hours: "காலை 11:00 – மாலை 4:00",
     contactLabel: "தொடர்புக்கு",
-    footerLine: "உங்கள் வீட்டுச் சுவைக்கான அடுத்த நிறுத்தம் — சாரல் மெஸ்.",
-    call: "அழைக்க",
-    location: "தென்காசி – குற்றாலம் பக்கம்",
+    footerLine: "ஒருமுறை வந்து சுவைத்துப் பாருங்கள்.",
+    location: "குத்துக்கல்வலசை",
+    address: "பாரதி நகர், IT முக்கு, குத்துக்கல்வலசை",
+    reviewsEyebrow: "வாடிக்கையாளர் மதிப்புரைகள்",
+    reviewsTitle: "சாப்பிட்டவர்கள் சொல்வது",
+    reviewsSub: "எங்கள் சாப்பாட்டின் சுவையை வாடிக்கையாளர்களே சொல்கிறார்கள்.",
+    reviewerName: "சரவணன்",
+    reviewQuote: "அவர்களின் அனுபவத்தை வீடியோவில் கேளுங்கள்.",
+    playVideo: "வீடியோவைப் பார்க்க",
+    viewImage: "படத்தை முழுதாகப் பார்க்க",
+    close: "மூடு",
   },
   en: {
-    eyebrow: "TENKASI • COURTALLAM SIDE",
+    eyebrow: "Kooraikkadai",
     headline: "Homely taste. Amma’s touch.",
     subhead:
-      "Comforting country-style non-veg meals, served with the warmth of home.",
+      "We cook here exactly the way we cook at home. No hired chefs - Our Moms' Cooking, The Taste of Your Home!, using only natural, organic ingredients.",
     intro:
       "At Saaral Mess, every banana leaf brings the familiar flavour of home cooking.",
     badge1: "Homely Taste",
-    badge2: "Amma’s Cooking",
-    badge3: "Local Mess Flavour",
     menuTitle: "Our Signature Meals",
-    menuSub: "Come hungry. Leave happy.",
+    menuSub: "Come Enjoy a Hearty Meal!",
     foods: [
       {
         name: "Mutton Meals",
         english: "Mutton Meals",
-        detail: "A hearty meal with rich, homestyle masala",
+        detail: "Mutton Curry, Unlimited Meals",
         image: "/images/mutton-meals.webp",
       },
       {
         name: "Chicken Meals",
         english: "Chicken Meals",
-        detail: "Comforting chicken curry with homely spices",
+        detail: "Chicken Curry, Unlimited Meals",
         image: "/images/chicken-meals.webp",
       },
       {
         name: "Fish Meals",
         english: "Fish Meals",
-        detail: "Bold fish curry and authentic local flavour",
+        detail: "1 Fried Fish + 1 Fish Curry, Unlimited Meals",
         image: "/images/fish-meals.webp",
       },
       {
         name: "Ulundhu Paruppu Soru",
         english: "Ulundhu Paruppu Soru",
-        detail: "A traditional taste from our region",
+        detail: "Ulundhu Paruppu Soru + karuvattu kuzhambu",
         image: "/images/ulunthu-meals.webp",
       },
     ],
@@ -97,15 +105,34 @@ const copy = {
     hoursLabel: "Opening Hours",
     hours: "11:00 AM – 4:00 PM",
     contactLabel: "Contact",
-    footerLine: "Your next stop for a homestyle meal — Saaral Mess.",
-    call: "Call",
-    location: "Tenkasi – Courtallam side",
+    footerLine: "Give Us a Try.",
+    location: "Kuthukalvalasai",
+    address: "Bharathi Nagar, IT Mukkku, Kuthukalvalasai",
+    reviewsEyebrow: "WHAT OUR GUESTS SAY",
+    reviewsTitle: "Customer Reviews",
+    reviewsSub: "Hear it straight from the people who ate with us.",
+    reviewerName: "Saravanan",
+    reviewQuote: "Hear about their experience in their own words.",
+    playVideo: "Play video",
+    viewImage: "View full image",
+    close: "Close",
   },
 };
 
+// Add more review videos here later – the grid adapts automatically.
+// Place video files inside /public/videos/.
+const reviews = [{ id: "review-1", src: "/videos/review-1.mp4", rating: 5 }];
+
+const heroImage = {
+  src: "/images/saaral-mess.jpg",
+  alt: "Traditional mutton meals served on a banana leaf at Saaral Mess",
+  width: 3472,
+  height: 4624,
+};
+
 const contacts = [
-  { label: "Phone 1", number: "REPLACE_WITH_PHONE_1" },
-  { label: "Phone 2", number: "REPLACE_WITH_PHONE_2" },
+  { label: "+91 92800 88502", number: "+91 92800 88502" },
+  { label: "+91 90952 23137", number: "+91 90952 23137" },
 ];
 
 function phoneHref(number: string) {
@@ -115,12 +142,15 @@ function phoneHref(number: string) {
 export default function Home() {
   const [language, setLanguage] = useState<Language>("ta");
   const t = copy[language];
+  const [media, setMedia] = useState<ModalMedia | null>(null);
+  const closeMedia = useCallback(() => setMedia(null), []);
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff8e8]">
       <div className="bg-[#651708] text-[#fff4d4]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
-          <p className="text-xs font-semibold tracking-wide sm:text-sm">
+          <p className="text-xs font-semibold tracking-wide sm:text-sm flex gap-2 align-middle justify-center">
+            <House size="20" />
             {t.eyebrow}
           </p>
           <div className="flex shrink-0 items-center rounded-full border border-[#f8bd2b]/60 bg-[#431006] p-1 text-xs font-bold">
@@ -147,8 +177,8 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 opacity-20 [background-image:radial-gradient(#ffc928_0.7px,transparent_0.7px)] [background-size:18px_18px]" />
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 pb-10 pt-7 sm:px-6 sm:pb-14 sm:pt-10 lg:grid-cols-[1fr_0.9fr] lg:gap-12 lg:py-16">
           <div className="flex flex-col items-start">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ffcf35]/40 bg-black/15 px-3 py-1.5 text-xs font-bold tracking-wide text-[#ffe6a1] sm:text-sm">
-              <span className="h-2 w-2 rounded-full bg-[#ffc928]" />
+            <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-[#ffcf35]/40 bg-black/15 px-3 py-1.5 text-xs font-bold tracking-wide text-[#ffe6a1] sm:text-sm">
+              <MapPin size="15" />
               {t.location}
             </div>
             <h1
@@ -171,11 +201,12 @@ export default function Home() {
             <p className="mt-4 max-w-xl text-base leading-8 text-orange-50/90 sm:text-lg">
               {t.subhead}
             </p>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-orange-100/75 sm:text-base">
+            {/* <p className="mt-3 max-w-xl text-sm leading-7 text-orange-100/75 sm:text-base">
               {t.intro}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {[t.badge1, t.badge2, t.badge3].map((badge) => (
+            </p> */}
+
+            {/* <div className="mt-6 flex flex-wrap gap-2">
+              {[t.badge1].map((badge) => (
                 <span
                   key={badge}
                   className="rounded-full border border-[#ffca2b]/40 bg-[#ffca2b]/10 px-3 py-2 text-xs font-bold text-[#ffe9a8] sm:text-sm"
@@ -183,23 +214,28 @@ export default function Home() {
                   {badge}
                 </span>
               ))}
-            </div>
+            </div> */}
             <a
               href="#menu"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#ffca28] px-6 py-3.5 text-sm font-black text-[#4d1707] shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-[#ffdc65]"
             >
               {language === "ta"
-                ? "சாப்பாட்டைப் பாருங்கள்"
+                ? "உணவுப் பட்டியலைப் பாருங்கள்!"
                 : "Explore Our Meals"}{" "}
-              <span aria-hidden="true">↘</span>
+              <ArrowDown size="17" />
             </a>
           </div>
           <div className="relative mx-auto w-full max-w-2xl">
             <div className="absolute -inset-3 rotate-2 rounded-[2rem] border border-[#ffca28]/35 bg-[#ffca28]/10" />
-            <div className="relative overflow-hidden rounded-[1.7rem] border-4 border-[#ffc928] shadow-2xl shadow-black/35">
+            <button
+              type="button"
+              onClick={() => setMedia({ type: "image", ...heroImage })}
+              aria-label={t.viewImage}
+              className="relative block w-full cursor-zoom-in overflow-hidden rounded-[1.7rem] border-4 border-[#ffc928] text-left shadow-2xl shadow-black/35"
+            >
               <Image
-                src="/images/saaral-mess.jpg"
-                alt="Traditional mutton meals served on a banana leaf at Saaral Mess"
+                src={heroImage.src}
+                alt={heroImage.alt}
                 width={325}
                 height={255}
                 priority
@@ -209,10 +245,10 @@ export default function Home() {
                 <p className="mt-1 text-xl font-extrabold text-white sm:text-2xl">
                   {language === "ta"
                     ? "வயிறாரச் சாப்பிட வாங்க!"
-                    : "Come hungry. Eat heartily."}
+                    : "Come Hungry, Leave Happy!"}
                 </p>
               </div>
-            </div>
+            </button>
           </div>
         </div>
         <div className="h-2 bg-gradient-to-r from-[#ffc928] via-[#fff0a3] to-[#ffc928]" />
@@ -282,6 +318,52 @@ export default function Home() {
         </div>
       </section>
 
+      <section
+        id="reviews"
+        className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16"
+      >
+        <div className="mb-7 flex flex-col justify-between gap-3 sm:mb-9 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.25em] text-[#a13a14]">
+              {t.reviewsEyebrow}
+            </p>
+            <h2
+              className="mt-2 text-3xl font-black text-[#541708] sm:text-4xl"
+              style={{
+                fontFamily:
+                  language === "ta"
+                    ? "var(--font-tamil), sans-serif"
+                    : "var(--font-display), sans-serif",
+              }}
+            >
+              {t.reviewsTitle}
+            </h2>
+          </div>
+          <p className="max-w-md text-sm leading-6 text-[#7a4b37] sm:text-base">
+            {t.reviewsSub}
+          </p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {reviews.map((review) => (
+            <ReviewVideoCard
+              key={review.id}
+              src={review.src}
+              rating={review.rating}
+              name={t.reviewerName}
+              quote={t.reviewQuote}
+              playLabel={t.playVideo}
+              onOpen={() =>
+                setMedia({
+                  type: "video",
+                  src: review.src,
+                  title: `${t.reviewsTitle} – ${t.reviewerName}`,
+                })
+              }
+            />
+          ))}
+        </div>
+      </section>
+
       <section className="px-4 pb-12 sm:px-6 sm:pb-16">
         <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[1.75rem] bg-[#4f170b] shadow-xl shadow-[#4f170b]/15 md:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-12">
@@ -331,12 +413,7 @@ export default function Home() {
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#301006]/55 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-4 rounded-full border border-white/25 bg-[#431407]/75 px-4 py-2 text-sm font-bold text-white backdrop-blur-sm">
-              {language === "ta"
-                ? "அருவி • அணை • வயல்வெளி"
-                : "Waterfalls • Dam • Farmlands"}
-            </div>
+            <div className="absolute inset-0 bg-linear-to-t from-[#301006]/55 via-transparent to-transparent" />
           </div>
         </div>
       </section>
@@ -358,7 +435,7 @@ export default function Home() {
             <p className="mt-2 max-w-lg text-sm leading-6 text-orange-100/70">
               {t.footerLine}
             </p>
-            <p className="mt-2 text-xs text-orange-100/50">{t.location}</p>
+            <p className="mt-2 text-xs text-orange-100/50">{t.address}</p>
           </div>
           <div>
             <h2 className="text-sm font-extrabold text-[#ffcf35]">
@@ -371,33 +448,42 @@ export default function Home() {
                   href={phoneHref(contact.number)}
                   className="rounded-full border border-[#ffca28]/35 px-4 py-2 text-sm font-bold transition hover:bg-[#ffca28] hover:text-[#3c160b]"
                 >
-                  {t.call} · {contact.label}
+                  {contact.label}
                 </a>
               ))}
             </div>
-            <p className="mt-2 text-xs leading-5 text-orange-100/45">
-              {language === "ta"
-                ? "தொடங்குவதற்கு முன் page.tsx-ல் தொடர்பு எண்களை மாற்றவும்."
-                : "Replace the two placeholder numbers in page.tsx before publishing."}
-            </p>
           </div>
         </div>
-        <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-orange-100/55">
-          © {new Date().getFullYear()} Saaral Mess.{" "}
-          {language === "ta"
-            ? "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."
-            : "All rights reserved."}{" "}
-          <span className="mx-1 text-[#ffca28]">•</span> Powered by{" "}
-          <a
-            href="https://tamilbusiness.in"
-            target="_blank"
-            rel="noreferrer"
-            className="font-bold text-[#ffcf35] hover:underline"
-          >
-            tamilbusiness.in
-          </a>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between border-t border-white/10 sm:px-6 py-4 gap-2 text-center text-xs text-orange-100/55">
+          <div className="flex hidden md:block">
+            {language === "ta"
+              ? "இதே போன்ற இணையதளத்தை உருவாக்க எங்களைத் தொடர்புகொள்ளுங்கள்!"
+              : "Contact Us to Create a Website Like This"}{" "}
+            <a
+              href="https://tamilbusiness.in"
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-[#ffcf35] hover:underline"
+            >
+              tamilbusiness.in
+            </a>
+          </div>
+          <div>
+            © {new Date().getFullYear()}
+            <span className="mx-1 text-[#ffca28]">•</span> Powered by{" "}
+            <a
+              href="https://tamilbusiness.in"
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-[#ffcf35] hover:underline"
+            >
+              tamilbusiness.in
+            </a>{" "}
+          </div>
         </div>
       </footer>
+
+      <MediaModal media={media} onClose={closeMedia} closeLabel={t.close} />
     </main>
   );
 }
